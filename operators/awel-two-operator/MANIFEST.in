@@ -1,0 +1,2 @@
+include dbgpts.toml
+include awel_two_operator/definition/*.json
