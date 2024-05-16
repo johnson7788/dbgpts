@@ -31,7 +31,6 @@ class SimpleTwoOperator(MapOperator[str, str]):
                 "Input value",
                 "value",
                 str,
-                default="Xiao Peng You!",
                 description="some people",
             )
         ],
