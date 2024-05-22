@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "agents"
+name = "execute-mysql-sql"
 version = "0.1.0"
-description = "Agents插件"
-authors = []
+description = "根据mysql服务器的信息，执行mysql sql语句"
+authors = ["Fangyin Cheng <staneyffer@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]

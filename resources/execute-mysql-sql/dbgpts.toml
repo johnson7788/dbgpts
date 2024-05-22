@@ -1,0 +1,11 @@
+[resource]
+label = "Execute Mysql SQL"
+name = "execute_mysql_sql"
+version = "0.1.0"
+description = "连接mysql服务器，执行mysql的sql"
+authors = []
+definition_type = "python"
+
+[python_config]
+
+[json_config]

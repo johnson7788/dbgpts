@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "simple-calculator-example"
 version = "0.1.0"
-description = ""
+description = "简单计算器工具"
 authors = ["Fangyin Cheng <staneyffer@gmail.com>"]
 readme = "README.md"
 

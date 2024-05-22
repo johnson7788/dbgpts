@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "agents"
+name = "data-discovery-agent"
 version = "0.1.0"
-description = "Agents插件"
-authors = []
+description = "数据探索Agent"
+authors = ["Johnson Guo <johnson@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-
+dbgpt = {extras = ["agent"], version = "^0.5.6rc1"}
 
 [build-system]
 requires = ["poetry-core"]

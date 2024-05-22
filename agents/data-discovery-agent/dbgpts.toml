@@ -1,0 +1,11 @@
+[agent]
+label = "Data Discovery Agent"
+name = "data_discovery_agent"
+version = "0.1.0"
+description = "数据探索Agent"
+authors = []
+definition_type = "python"
+
+[python_config]
+
+[json_config]

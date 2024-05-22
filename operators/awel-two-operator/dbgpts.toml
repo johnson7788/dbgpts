@@ -2,7 +2,7 @@
 label = "Awel Two Operator"
 name = "awel_two_operator"
 version = "0.1.0"
-description = ""
+description = "测试awel的operator"
 authors = []
 definition_type = "python"
 

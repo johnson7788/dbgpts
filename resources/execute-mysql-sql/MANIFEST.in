@@ -1,0 +1,2 @@
+include dbgpts.toml
+include execute_mysql_sql/definition/*.json
