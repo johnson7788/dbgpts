@@ -3,7 +3,7 @@ import pymysql
 from typing import Annotated
 from dbgpt.agent.resource import tool
 
-@tool
+@tool("execute-mysql-sql", description="给定数据库的信息和sql，执行SQL")
 def execute_sql_query(sql_query: Annotated[str, 'sql语句', True],
                       host: Annotated[str, '数据库地址', True],
                       port: Annotated[str, '数据库端口', True],
