@@ -9,13 +9,10 @@ from dbgpt.agent.util import cmp_string_equal
 from dbgpt.vis import Vis
 from pydantic import BaseModel, Field
 
-NOT_RELATED_MESSAGE = "Did not find the information you want."
-
-
 class DiscoveryActionInput(BaseModel):
     summary: str = Field(
         ...,
-        description="The summary content",
+        description="生成的结果",
     )
 
 
@@ -63,10 +60,11 @@ class DiscoveryAction(Action[DiscoveryActionInput]):
                 content="The requested correctly structured answer could not be found, "
                         f"ai message: {ai_message}",
             )
+        NOT_CORRECT_MESSAGE = "生成的代码是错误的"
         # Check if the summary content is not related to user questions
         if param.summary and cmp_string_equal(
                 param.summary,
-                NOT_RELATED_MESSAGE,
+                NOT_CORRECT_MESSAGE,
                 ignore_case=True,
                 ignore_punctuation=True,
                 ignore_whitespace=True,

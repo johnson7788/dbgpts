@@ -11,16 +11,10 @@ from dbgpt.core import ModelMessageRoleType
 from .action import DiscoveryAction, NOT_RELATED_MESSAGE
 
 CHECK_RESULT_SYSTEM_MESSAGE = (
-    "You are an expert in analyzing the results of a summary task."
-    "Your responsibility is to check whether the summary results can summarize the "
-    "input provided by the user, and then make a judgment. You need to answer "
-    "according to the following rules:\n"
-    "    Rule 1: If you think the summary results can summarize the input provided"
-    " by the user, only return True.\n"
-    "    Rule 2: If you think the summary results can NOT summarize the input "
-    "provided by the user, return False and the reason, split by | and ended "
-    "by TERMINATE. For instance: False|Some important concepts in the input are "
-    "not summarized. TERMINATE"
+    "你是1个代码专家，能够检查Bot根据问题生成的代码是否正确。"
+    "你的答案应该遵从下面原则:\n"
+    "    Rule 1: 如果你认为代码没问任何问题，只需返回True"
+    "    Rule 2: 如果你认为生成的代码存在问题，请返回False和问题描述，描述应该包括问题本身和代码中可能存在的问题，并以|分割，最后以TERMINATE结尾"
 )
 
 
@@ -28,7 +22,7 @@ class DataDiscoverAgent(ConversableAgent):
     profile: ProfileConfig = ProfileConfig(
         # The name of the agent
         name="disagent",
-        # The role of the agent
+        # The role of the agent, 对应DB-GPT:dbgpt/agent/core/agent_manage.py中的def get_by_name(self, name: str)的name
         role="Discovers",
         # The core functional goals of the agent tell LLM what it can do with it.
         goal=(
@@ -40,7 +34,15 @@ class DataDiscoverAgent(ConversableAgent):
             "可以对提供的数据库，文本等信息进行探索。"
         ),
         constraints=[
-            """你可以自己创建工具或者使用已有的工具解决问题，你需要按如下格式进行探索。
+            """你可以自己创建工具或者使用已有的工具解决问题。
+            **Information**
+            {{information}}
+            **HasTools**
+            {{hastools}
+            **Question**
+            """,
+        ],
+        examples = ("""
             ## Example
             **Information**
             mysql数据库，ip: 192.168.50.189, 端口:3306, 用户名root, 密码test, 数据库名称taobao
@@ -94,15 +96,7 @@ class DataDiscoverAgent(ConversableAgent):
             database = 'taobao'
             show_tao_tables(host,port,user,password,database)
             ```
-            ## Example
-            **Information**
-            {{information}}
-            **HasTools**
-            {{hastools}
-            **Question**
-            
-            """,
-        ],
+        """)
     )
 
     def __init__(self, **kwargs):
@@ -111,10 +105,11 @@ class DataDiscoverAgent(ConversableAgent):
 
     def _init_reply_message(self, received_message: AgentMessage) -> AgentMessage:
         reply_message = super()._init_reply_message(received_message)
-        # Fill in the dynamic parameters in the prompt template
+        print(f"收到的received_message: {received_message}")
+        # Fill in the dynamic parameters in the prompt template≈
         # information是用户提供的上下信息
         # hastools根据生成的问题检索需要使用的工具
-        reply_message.context = {"information": information, "hastools": hastools}
+        reply_message.context = {"information": "hello", "hastools": "tools"}
         return reply_message
 
     def prepare_act_param(self) -> Dict[str, Any]:
@@ -134,10 +129,9 @@ class DataDiscoverAgent(ConversableAgent):
                 AgentMessage(
                     role=ModelMessageRoleType.HUMAN,
                     content=(
-                        "Please understand the following user input and summary results"
-                        " and give your judgment:\n"
-                        f"User Input: {current_goal}\n"
-                        f"Summary Results: {task_result}"
+                        "请检查用户的问题和生成的代码，检查生成的代码是否正确\n"
+                        f"用户输入: {current_goal}\n"
+                        f"生成结果: {task_result}"
                     ),
                 )
             ],
